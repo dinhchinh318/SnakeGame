@@ -3,6 +3,7 @@
 
 #include "Snake.h"
 #include "Food.h"
+#include "Level/LevelFactory.h"
 
 class GameManager {
 private:
@@ -10,6 +11,7 @@ private:
 
     Snake snake;
     Food food;
+    std::unique_ptr<Level> currentLevel;
 
     const int windowWidth = 800;
     const int windowHeight = 600;
@@ -38,6 +40,10 @@ public:
     void run();
     void resetGame();
     void start();
+
+    //
+    void setLevel(numberLevel num);
+    const Level& getCurrentLevel() const;
 };
 
 #endif
