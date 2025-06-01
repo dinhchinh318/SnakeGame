@@ -1,0 +1,17 @@
+# Ignore VS Code settings
+.vscode/
+
+# Ignore SFML library folder (nếu copy vào project)
+SFML/
+sfml/
+Libs/SFML/
+lib/SFML/
+
+# Build files
+*.exe
+*.obj
+*.dll
+*.out
+
+# Ignore build folder
+build/

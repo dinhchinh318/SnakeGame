@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "direction.h"
+#include "Direction.h"
 
 class Snake{
 private:
