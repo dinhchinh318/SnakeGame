@@ -10,7 +10,7 @@ LDFLAGS := -mconsole -L./SFML/lib -lsfml-graphics -lsfml-window -lsfml-system -l
 
 # --------------------------
 # NGUỒN CHƯƠNG TRÌNH CHÍNH
-SRC := $(wildcard source/*.cpp)
+SRC := $(wildcard source/*.cpp) $(wildcard source/**/*.cpp)
 OBJ := $(patsubst source/%.cpp, release/%.o, $(SRC))
 
 # --------------------------

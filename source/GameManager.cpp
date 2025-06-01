@@ -51,6 +51,9 @@ void GameManager::update()
 void GameManager::draw() 
 {
     this->window.clear(sf::Color::Black);
+    if (currentLevel) {
+        currentLevel->drawObstacles(window, tileSize); // VẼ TƯỜNG BAO/OBSTACLE
+    }
     this->snake.draw(window, tileSize);
     this->food.draw(window, tileSize);
     this->window.display();
@@ -102,4 +105,12 @@ void GameManager::resetGame()
 void GameManager::start() {
     this->resetGame();
     this->run();
+}
+
+void GameManager::setLevel(numberLevel num) {
+    currentLevel = LevelFactory::createLevel(num);
+}
+
+const Level& GameManager::getCurrentLevel() const { 
+    return *currentLevel; 
 }

@@ -14,4 +14,4 @@ lib/SFML/
 *.out
 
 # Ignore build folder
-build/
+release/

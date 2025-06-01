@@ -2,8 +2,11 @@
 
 int main() {
     GameManager game;
+
+    game.setLevel(numberLevel::L1);
+
     game.initWindow();
-    game.start(); // chạy luôn cả vòng lặp game
+    game.start();
 
     return 0;
 }
