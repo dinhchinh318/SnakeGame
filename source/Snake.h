@@ -12,6 +12,8 @@ private:
     float speed;
     bool growNext;
     const int initLength = 4;
+    sf::Texture headTexture, bodyTexture, tailTexture, turnTexture;
+    sf::Sprite headSprite, bodySprite, tailSprite, turnSprite;
 public:
     Snake(sf::Vector2f starPos, Direction dir = RIGHT);
     void setDirection(Direction dir);
@@ -22,7 +24,7 @@ public:
     void move();
     void grow();
     bool checkSelfCollision();
-    void draw(sf::RenderWindow& window, int tileSize, const sf::Color color = sf::Color::Green);
+    void draw(sf::RenderWindow& window, int tileSize);
     void reset(sf::Vector2f newStart,  Direction dir = RIGHT);
 };
 

@@ -1,4 +1,5 @@
 # Ignore VS Code settings
+.vscode/settings.json
 .vscode/
 
 # Ignore SFML library folder (nếu copy vào project)
@@ -14,4 +15,4 @@ lib/SFML/
 *.out
 
 # Ignore build folder
-build/
+release/
