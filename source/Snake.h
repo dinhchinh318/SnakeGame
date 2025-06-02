@@ -9,8 +9,8 @@ class Snake{
 private:
     std::vector<sf::Vector2i> snake;
     Direction direction;
-    float speed;
     bool growNext;
+    bool isAlive;
     const int initLength = 4;
     sf::Texture headTexture, bodyTexture, tailTexture, turnTexture;
     sf::Sprite headSprite, bodySprite, tailSprite, turnSprite;
@@ -22,6 +22,8 @@ public:
     sf::Vector2i getHeadPosition();
     sf::Vector2i getTailPosition();
     std::vector<sf::Vector2i> getBody();
+    bool getIsAlive();
+    void setIsAlive(bool isAlive);
     void move();
     void grow();
     bool checkSelfCollision();

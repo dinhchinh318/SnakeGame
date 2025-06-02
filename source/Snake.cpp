@@ -1,9 +1,9 @@
 #include "Snake.h"
-#include <iostream>
+
 Snake::Snake(sf::Vector2i starPos, Direction dir){
     direction = dir;
-    speed = 0.5f;
     growNext = false;
+    isAlive = true;
 
     // load snake image
     headTexture.loadFromFile("assets/picture/snake_head.png");
@@ -23,19 +23,19 @@ Snake::Snake(sf::Vector2i starPos, Direction dir){
     turnSprite.setOrigin(turnTexture.getSize().x / 2.f, turnTexture.getSize().y / 2.f);
     //
     
-    sf::Vector2i delta(0.f, 0.f);
+    sf::Vector2i delta(0, 0);
     switch (dir) {
         case UP:
-            delta = sf::Vector2i(0.f, 1.f);
+            delta = sf::Vector2i(0, 1);
             break;
         case DOWN:
-            delta = sf::Vector2i(0.f, -1.f);
+            delta = sf::Vector2i(0, -1);
             break;
         case LEFT: 
-            delta = sf::Vector2i(1.f, 0.f); 
+            delta = sf::Vector2i(1, 0); 
             break;
         case RIGHT:
-            delta = sf::Vector2i(-1.f, 0.f); 
+            delta = sf::Vector2i(-1, 0); 
             break;
         default: 
             break;
@@ -60,12 +60,12 @@ std::vector<sf::Vector2i> Snake::getSnake() {
 }
 
 sf::Vector2i Snake::getHeadPosition() {
-    if (snake.empty()) return sf::Vector2i(-1.f, -1.f);
+    if (snake.empty()) return sf::Vector2i(-1, -1);
     return snake.front();
 }
 
 sf::Vector2i Snake::getTailPosition() {
-    if (snake.empty()) return sf::Vector2i(-1.f, -1.f);
+    if (snake.empty()) return sf::Vector2i(-1, -1);
     return snake.back();
 }
 
@@ -80,6 +80,15 @@ std::vector<sf::Vector2i> Snake::getBody() {
     }
     return body;
 }
+
+bool Snake::getIsAlive(){
+    return isAlive;
+}
+
+void Snake::setIsAlive(bool isAlive){
+    this->isAlive = isAlive;
+}
+
 
 void Snake::move(){
     sf::Vector2i newHead = this->getHeadPosition();
@@ -115,27 +124,10 @@ void Snake::grow(){
 }
 
 bool Snake::checkSelfCollision(){
-    sf::Vector2i newHead = this->getHeadPosition();
-
-    switch(direction){
-        case UP:
-            newHead.y -= 1;
-            break;
-        case DOWN:
-            newHead.y += 1;
-            break;
-        case LEFT:
-            newHead.x -= 1;
-            break;
-        case RIGHT:
-            newHead.x += 1;
-            break;
-        default:
-            break;
-    }
+    sf::Vector2i head = this->getHeadPosition();
 
     for (int i = 1; i < snake.size(); ++i) {
-        if (newHead == snake[i]) {
+        if (head == snake[i]) {
             return true;
         }
     }
@@ -148,26 +140,26 @@ void Snake::reset(sf::Vector2i newStart,  Direction dir){
     growNext = false;
     snake.clear();
 
-    sf::Vector2i delta(0.f, 0.f);
+    sf::Vector2i delta(0, 0);
     switch (dir) {
         case UP:
-            delta = sf::Vector2i(0.f, 1.f);
+            delta = sf::Vector2i(0, 1);
             break;
         case DOWN:
-            delta = sf::Vector2i(0.f, -1.f);
+            delta = sf::Vector2i(0, -1);
             break;
         case LEFT: 
-            delta = sf::Vector2i(1.f, 0.f); 
+            delta = sf::Vector2i(1, 0); 
             break;
         case RIGHT:
-            delta = sf::Vector2i(-1.f, 0.f); 
+            delta = sf::Vector2i(-1, 0); 
             break;
         default: 
             break;
     }
 
     for (int i = 0; i < initLength; ++i) {
-        snake.push_back(newStart + delta * static_cast<int>(i));
+        snake.push_back(newStart + delta * i);
     }
 }
 

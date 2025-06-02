@@ -13,6 +13,8 @@ Level2::Level2() {
         obstacles.push_back({0, y});           // Trái
         obstacles.push_back({cols - 1, y});    // Phải
     }
+
+    startPort = {10, 1};
 }
 
 numberLevel Level2::getLevelNumber() const { 
