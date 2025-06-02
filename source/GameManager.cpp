@@ -19,32 +19,46 @@ void GameManager::initWindow() {
 
 void GameManager::update() 
 {
-    // Di chuyển
-    this->snake.move();
-    
-    sf::Vector2i head = snake.getHeadPosition();
-    sf::Vector2i foodPos = food.getPosition();
+    // Kiểm tra cổng
+    sf::Vector2i stPort = currentLevel->getStartPort();
 
+    sf::Vector2i tail = snake.getTailPosition();
     // Lấy danh sách các obstacles từ currentLevel
     std::vector<sf::Vector2i> obstacles = currentLevel ? currentLevel->getObstacles() : std::vector<sf::Vector2i>();
 
-    if ((int)head.x == (int)foodPos.x && (int)head.y == (int)foodPos.y) {
-        foodEaten++;
-        if (currentLevel && foodEaten >= currentLevel->getFoodGoal()) {
-            // Kiểm tra win game
-            if (static_cast<int>(currentLevel->getLevelNumber()) == 2){
-                std::cout << "You won" << std::endl;
-                return;
-            }
-            // Nếu ăn đủ thức ăn, chuyển sang level tiếp theo
+    if (tail == stPort){
+        obstacles.push_back(stPort);
+        currentLevel->addObstacle(stPort);
+    }
+    
+    // Di chuyển
+    this->snake.move();
+    sf::Vector2i head = snake.getHeadPosition();
+    sf::Vector2i foodPos = food.getPosition();
+
+    if (currentLevel && foodEaten >= currentLevel->getFoodGoal()) {
+        sf::Vector2i otPort = currentLevel->getOutPort();
+        currentLevel->deleteObstacle(otPort);
+
+        if (tail == otPort){
             foodEaten = 0; // Reset số lượng thức ăn đã ăn
             this->setLevel(static_cast<numberLevel>(static_cast<int>(currentLevel->getLevelNumber()) + 1));
             std::cout << "Chuyển sang level tiếp theo: " << static_cast<int>(currentLevel->getLevelNumber()) << std::endl;
             //this->resetGame();
             return; // Thoát hàm để tránh vẽ thức ăn mới
         }
-        snake.grow();
-        food.spawn(obstacles, this->snake.getSnake(), cols, rows); // Sinh thức ăn mới
+    }
+
+    if ((int)head.x == (int)foodPos.x && (int)head.y == (int)foodPos.y) {
+        if (drawFood){
+            foodEaten++;
+            snake.grow();
+        }
+        if (foodEaten < currentLevel->getFoodGoal()){
+            food.spawn(obstacles, this->snake.getSnake(), cols, rows); // Sinh thức ăn mới
+        } else {
+            drawFood = false;
+        }
     }
 
     // Kiểm tra chạm tường
@@ -77,10 +91,12 @@ void GameManager::draw()
 {
     this->window.clear(sf::Color::Black);
     if (currentLevel) {
-        currentLevel->drawObstacles(window, tileSize); // VẼ TƯỜNG BAO/OBSTACLE
+        currentLevel->draw(window, tileSize); // VẼ TƯỜNG BAO/OBSTACLE
     }
     this->snake.draw(window, tileSize);
-    this->food.draw(window, tileSize);
+    if (drawFood){
+        this->food.draw(window, tileSize);
+    }
     if (gameOver == true) {
         sf::Font font;
         if (font.loadFromFile("assets/Fonts/arial.ttf")) {
@@ -167,6 +183,7 @@ void GameManager::run() {
 void GameManager::resetGame() 
 {
     gameOver = false;
+    drawFood = true;
     this->setLevel(numberLevel::L1);
     this->snake.reset(currentLevel->getStartPort(), RIGHT);
     this->spawnFood();

@@ -10,9 +10,10 @@ public:
     numberLevel getLevelNumber() const override;
     int getFoodGoal() const override;
     const std::vector<sf::Vector2i>& getObstacles() const override;
-
+    void addObstacle(sf::Vector2i obstacle) override;
+    void deleteObstacle(sf::Vector2i obstacle) override;
     void draw(sf::RenderWindow& window, int tileSize) override;
-    void drawObstacles(sf::RenderWindow& window, int tileSize) override;
+    void drawObstacles(sf::RenderWindow& window, int tileSize);
     // void update(sf::RenderWindow& window, Snake& snake, GameManager& gm) override;
     // void pollEvents(GameManager& gm) override;
 };

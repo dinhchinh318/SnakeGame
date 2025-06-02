@@ -3,6 +3,10 @@
 Level2::Level2() {
     // Bỏ obstacles cũ, xây lại tường bao khung hình
     obstacles.clear();
+    // Vị trí cổng
+    startPort = {0,1};
+    outPort = {cols - 1, rows - 2};
+
     // Cạnh trên và dưới
     for (int x = 0; x < cols; ++x) {
         obstacles.push_back({x, 0});           // Trên
@@ -13,8 +17,6 @@ Level2::Level2() {
         obstacles.push_back({0, y});           // Trái
         obstacles.push_back({cols - 1, y});    // Phải
     }
-
-    startPort = {10, 1};
 }
 
 numberLevel Level2::getLevelNumber() const { 
@@ -43,6 +45,14 @@ void Level2::drawObstacles(sf::RenderWindow& window, int tileSize)
         obsShape.setPosition(pos.x * tileSize, pos.y * tileSize);
         window.draw(obsShape);
     }
+}
+
+void Level2::addObstacle(sf::Vector2i obstacle){
+    obstacles.push_back(obstacle);
+}
+
+void Level2::deleteObstacle(sf::Vector2i obstacle){
+    obstacles.erase(std::remove(obstacles.begin(), obstacles.end(), obstacle), obstacles.end());
 }
 
 // void Level2::update(sf::RenderWindow& window, Snake& snake, GameManager& gm)

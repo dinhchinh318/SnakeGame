@@ -15,7 +15,8 @@ private:
     std::unique_ptr<Level> currentLevel;
 
     int foodEaten = 0;
-    bool gameOver;
+    bool drawFood = true;
+    bool gameOver = false;
     const int windowWidth = 800;
     const int windowHeight = 600;
     const int tileSize = 20;
