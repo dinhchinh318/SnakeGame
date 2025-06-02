@@ -4,17 +4,18 @@
 #include <SFML/Graphics.hpp>
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 
 class Food 
 {
 private:
-    sf::Vector2f position;
+    sf::Vector2i position;
 public:
     Food();
 
-    void spawn();
+    void spawn(const std::vector<sf::Vector2i>& obstacles, const std::vector<sf::Vector2i>& snakeBody, int cols, int rows);
 
-    sf::Vector2f getPosition() const;
+    sf::Vector2i getPosition() const;
 
     void draw(sf::RenderWindow& window, int tileSize);
 };

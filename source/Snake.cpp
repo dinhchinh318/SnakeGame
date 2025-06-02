@@ -1,6 +1,6 @@
 #include "Snake.h"
 #include <iostream>
-Snake::Snake(sf::Vector2f starPos, Direction dir){
+Snake::Snake(sf::Vector2i starPos, Direction dir){
     direction = dir;
     speed = 0.5f;
     growNext = false;
@@ -23,26 +23,26 @@ Snake::Snake(sf::Vector2f starPos, Direction dir){
     turnSprite.setOrigin(turnTexture.getSize().x / 2.f, turnTexture.getSize().y / 2.f);
     //
     
-    sf::Vector2f delta(0.f, 0.f);
+    sf::Vector2i delta(0.f, 0.f);
     switch (dir) {
         case UP:
-            delta = sf::Vector2f(0.f, 1.f);
+            delta = sf::Vector2i(0.f, 1.f);
             break;
         case DOWN:
-            delta = sf::Vector2f(0.f, -1.f);
+            delta = sf::Vector2i(0.f, -1.f);
             break;
         case LEFT: 
-            delta = sf::Vector2f(1.f, 0.f); 
+            delta = sf::Vector2i(1.f, 0.f); 
             break;
         case RIGHT:
-            delta = sf::Vector2f(-1.f, 0.f); 
+            delta = sf::Vector2i(-1.f, 0.f); 
             break;
         default: 
             break;
     }
 
     for (int i = 0; i < initLength; ++i) {
-        snake.push_back(starPos + delta * static_cast<float>(i));
+        snake.push_back(starPos + delta * static_cast<int>(i));
     }
 }
 
@@ -55,19 +55,23 @@ Direction Snake::getDirection(){
     return direction;
 }
 
-sf::Vector2f Snake::getHeadPosition(){
-    if (snake.empty()) return sf::Vector2f(-1.f, -1.f);
+std::vector<sf::Vector2i> Snake::getSnake() {
+    return snake;
+}
+
+sf::Vector2i Snake::getHeadPosition() {
+    if (snake.empty()) return sf::Vector2i(-1.f, -1.f);
     return snake.front();
 }
 
-sf::Vector2f Snake::getTailPosition(){
-    if (snake.empty()) return sf::Vector2f(-1.f, -1.f);
+sf::Vector2i Snake::getTailPosition() {
+    if (snake.empty()) return sf::Vector2i(-1.f, -1.f);
     return snake.back();
 }
 
-std::vector<sf::Vector2f> Snake::getBody(){
+std::vector<sf::Vector2i> Snake::getBody() {
     int n = snake.size();
-    std::vector<sf::Vector2f> body;
+    std::vector<sf::Vector2i> body;
     for (int i = 0; i < n; i++){
         if (i == 0 || i == n - 1){
             continue;
@@ -78,7 +82,7 @@ std::vector<sf::Vector2f> Snake::getBody(){
 }
 
 void Snake::move(){
-    sf::Vector2f newHead = this->getHeadPosition();
+    sf::Vector2i newHead = this->getHeadPosition();
 
     switch(direction){
         case UP:
@@ -111,7 +115,7 @@ void Snake::grow(){
 }
 
 bool Snake::checkSelfCollision(){
-    sf::Vector2f newHead = this->getHeadPosition();
+    sf::Vector2i newHead = this->getHeadPosition();
 
     switch(direction){
         case UP:
@@ -139,31 +143,31 @@ bool Snake::checkSelfCollision(){
     return false;
 }
 
-void Snake::reset(sf::Vector2f newStart,  Direction dir){
+void Snake::reset(sf::Vector2i newStart,  Direction dir){
     direction = dir;
     growNext = false;
     snake.clear();
 
-    sf::Vector2f delta(0.f, 0.f);
+    sf::Vector2i delta(0.f, 0.f);
     switch (dir) {
         case UP:
-            delta = sf::Vector2f(0.f, 1.f);
+            delta = sf::Vector2i(0.f, 1.f);
             break;
         case DOWN:
-            delta = sf::Vector2f(0.f, -1.f);
+            delta = sf::Vector2i(0.f, -1.f);
             break;
         case LEFT: 
-            delta = sf::Vector2f(1.f, 0.f); 
+            delta = sf::Vector2i(1.f, 0.f); 
             break;
         case RIGHT:
-            delta = sf::Vector2f(-1.f, 0.f); 
+            delta = sf::Vector2i(-1.f, 0.f); 
             break;
         default: 
             break;
     }
 
     for (int i = 0; i < initLength; ++i) {
-        snake.push_back(newStart + delta * static_cast<float>(i));
+        snake.push_back(newStart + delta * static_cast<int>(i));
     }
 }
 
@@ -178,12 +182,12 @@ void Snake::draw(sf::RenderWindow& window, int tileSize){
             sprite = &tailSprite;
         } else {
             sprite = &bodySprite;
-            sf::Vector2f prev = snake[i - 1];
-            sf::Vector2f curr = snake[i];
-            sf::Vector2f next = snake[i + 1];
+            sf::Vector2i prev = snake[i - 1];
+            sf::Vector2i curr = snake[i];
+            sf::Vector2i next = snake[i + 1];
 
-            sf::Vector2f dir1 = prev - curr;
-            sf::Vector2f dir2 = next - curr;
+            sf::Vector2i dir1 = prev - curr;
+            sf::Vector2i dir2 = next - curr;
 
             if (dir1.x != dir2.x && dir1.y != dir2.y) {
                 sprite = &turnSprite;
@@ -213,9 +217,9 @@ void Snake::draw(sf::RenderWindow& window, int tileSize){
             }
         }
         else if (i == length - 1) {
-            sf::Vector2f tail = snake[i];
-            sf::Vector2f prev = snake[i - 1];
-            sf::Vector2f diff = tail - prev;
+            sf::Vector2i tail = snake[i];
+            sf::Vector2i prev = snake[i - 1];
+            sf::Vector2i diff = tail - prev;
 
             if (diff.x == 1) {
                 sprite->setRotation(270);
@@ -228,11 +232,11 @@ void Snake::draw(sf::RenderWindow& window, int tileSize){
             }
         }
         else if (sprite == &turnSprite) {
-            sf::Vector2f prev = snake[i - 1];
-            sf::Vector2f curr = snake[i];
-            sf::Vector2f next = snake[i + 1];
-            sf::Vector2f dir1 = prev - curr;
-            sf::Vector2f dir2 = next - curr;
+            sf::Vector2i prev = snake[i - 1];
+            sf::Vector2i curr = snake[i];
+            sf::Vector2i next = snake[i + 1];
+            sf::Vector2i dir1 = prev - curr;
+            sf::Vector2i dir2 = next - curr;
 
             if ((dir1.x == 1 && dir2.y == 1) || (dir2.x == 1 && dir1.y == 1)) {
                 sprite->setRotation(270);
@@ -245,8 +249,8 @@ void Snake::draw(sf::RenderWindow& window, int tileSize){
             }
         }
         else {
-            sf::Vector2f prev = snake[i - 1];
-            sf::Vector2f next = snake[i + 1];
+            sf::Vector2i prev = snake[i - 1];
+            sf::Vector2i next = snake[i + 1];
 
             if (prev.x == next.x) {
                 sprite->setRotation(0);

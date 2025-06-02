@@ -4,6 +4,7 @@
 #include "Snake.h"
 #include "Food.h"
 #include "Level/LevelFactory.h"
+#include <iostream>
 
 class GameManager {
 private:
@@ -13,6 +14,8 @@ private:
     Food food;
     std::unique_ptr<Level> currentLevel;
 
+    int foodEaten = 0;
+
     const int windowWidth = 800;
     const int windowHeight = 600;
     const int tileSize = 20;
@@ -20,14 +23,13 @@ private:
     const int rows = windowHeight / tileSize;
 
 public:
-    GameManager() : snake(sf::Vector2f(cols / 2, rows / 2)), food() {}
+    GameManager() : snake(sf::Vector2i(cols / 2, rows / 2)), food() {}
 
     // Graphics
     ~GameManager();
     void initWindow();
 
     void spawnFood();
-    void handleInput();
     sf::RenderWindow &getRenderWindow();
 
     // Window process

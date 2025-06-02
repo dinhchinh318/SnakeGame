@@ -7,7 +7,7 @@
 
 class Snake{
 private:
-    std::vector<sf::Vector2f> snake;
+    std::vector<sf::Vector2i> snake;
     Direction direction;
     float speed;
     bool growNext;
@@ -15,17 +15,18 @@ private:
     sf::Texture headTexture, bodyTexture, tailTexture, turnTexture;
     sf::Sprite headSprite, bodySprite, tailSprite, turnSprite;
 public:
-    Snake(sf::Vector2f starPos, Direction dir = RIGHT);
+    Snake(sf::Vector2i starPos, Direction dir = RIGHT);
     void setDirection(Direction dir);
     Direction getDirection();
-    sf::Vector2f getHeadPosition();
-    sf::Vector2f getTailPosition();
-    std::vector<sf::Vector2f> getBody();
+    std::vector<sf::Vector2i> getSnake();
+    sf::Vector2i getHeadPosition();
+    sf::Vector2i getTailPosition();
+    std::vector<sf::Vector2i> getBody();
     void move();
     void grow();
     bool checkSelfCollision();
     void draw(sf::RenderWindow& window, int tileSize);
-    void reset(sf::Vector2f newStart,  Direction dir = RIGHT);
+    void reset(sf::Vector2i newStart,  Direction dir = RIGHT);
 };
 
 #endif
