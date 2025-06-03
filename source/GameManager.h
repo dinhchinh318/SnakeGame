@@ -50,12 +50,12 @@ public:
     void resetGame();
     void start();
 
-    //
+    // Level logic
     void setLevel(numberLevel num);
     const Level& getCurrentLevel() const;
 
+    // update model
     void updateGameLogic();
-
     void checkGameOver();
     void checkLevelComplete();
     void updatePopups();
@@ -63,6 +63,16 @@ public:
     // Popups
     void showGameOverPopupFunc();
     void showWinPopupFunc();
+
+    void initializePopups  (
+                                Popup& p,
+                                int popupWidth, int popupHeight, 
+                                const std::string& title,
+                                const std::string& content,
+                                const std::vector<std::string>& ch,
+                                sf::Font& font,
+                                int buttonWidth, int buttonHeight
+                            );
 
     // Getters
     int getFoodEaten() const { return foodEaten; }

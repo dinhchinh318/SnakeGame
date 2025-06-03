@@ -1,82 +1,71 @@
 #include "GameManager.h"
 
-// GameManager::GameManager()
-//     : window(sf::VideoMode(windowWidth, windowHeight), "Snake Game"),
-//       snake(sf::Vector2i(cols / 2 * tileSize, rows / 2 * tileSize)),
-//       food(cols, rows, tileSize) {
-//     window.setFramerateLimit(10); // Set frame rate limit to match snake speed
-// }
-
 GameManager::~GameManager() {
     // Destructor can be used for cleanup if needed
 }
+
+void GameManager::initializePopups(
+    Popup& p,
+    int popupWidth, int popupHeight, 
+    const std::string& title,
+    const std::string& content,
+    const std::vector<std::string>& ch,
+    sf::Font& font,
+    int buttonWidth, int buttonHeight
+) {
+    int popupX = (windowWidth - popupWidth) / 2;
+    int popupY = (windowHeight - popupHeight) / 2;
+
+    p = Popup(
+        sf::Vector2f(float(popupWidth), float(popupHeight)),
+        sf::Vector2f(float(popupX), float(popupY)), ch.size());
+
+    p.setBackgroundColor(sf::Color(20, 15, 30, 220));
+    p.frame.setOutlineThickness(4);
+    p.frame.setOutlineColor(sf::Color(255, 255, 255, 180));
+    
+    p.setFont(font);
+    p.setTextColor(sf::Color::White);
+    p.setTextSize(30);
+    p.setTitle(title);
+    p.setContent(content);
+
+    p.setChoiceButtonSize(buttonWidth, buttonHeight);
+
+    for (int i = 0; i < ch.size(); ++i) {
+        p.setChoiceString(ch[i], i);
+        p.choices[i].setBackgroundColor(sf::Color(130, 90, 255, 230));
+        p.choices[i].setTextColor(sf::Color::White);
+        p.choices[i].setTextSize(22);
+    }
+
+    p.setPosition(float(popupX), float(popupY));
+}
+
 
 void GameManager::initWindow() {
     this->window.create(sf::VideoMode(windowWidth, windowHeight), "Snake Game", sf::Style::Titlebar | sf::Style::Close);
     this->window.setFramerateLimit(10);
 
-    // Khởi tạo popup đẹp
-    int popupWidth = 400, popupHeight = 240;
-    int popupX = (windowWidth - popupWidth) / 2;
-    int popupY = (windowHeight - popupHeight) / 2;
-
-    // Game Over Popup
-    gameOverPopup = Popup(
-        sf::Vector2f(float(popupWidth), float(popupHeight)),
-        sf::Vector2f(float(popupX), float(popupY)), 2);
-
-    gameOverPopup.setBackgroundColor(sf::Color(20, 15, 30, 220));
-    gameOverPopup.frame.setOutlineThickness(4);
-    gameOverPopup.frame.setOutlineColor(sf::Color(255, 255, 255, 180));
-
     sf::Font font;
     font.loadFromFile("assets/Fonts/arial.ttf");
-    gameOverPopup.setFont(font);
-    gameOverPopup.setTextColor(sf::Color::White);
-    gameOverPopup.setTextSize(30);
-    gameOverPopup.setTitle("GAME OVER!");
-    gameOverPopup.setContent("You lose");
 
-    gameOverPopup.setChoiceButtonSize(140, 46);
-    gameOverPopup.setChoiceString("Try again", 0);
-    gameOverPopup.setChoiceString("Quit", 1);
+    // Initialize popups
+    initializePopups(
+        gameOverPopup,
+        400, 240,
+        "GAME OVER!",
+        "You lose",
+        {"Try again", "Quit"}, font, 140, 46);
 
-    // Chỉnh màu button và gọi lại setPosition để căn giữa các nút
-    for (int i = 0; i < 2; ++i) {
-        gameOverPopup.choices[i].setBackgroundColor(sf::Color(130, 90, 255, 230));
-        gameOverPopup.choices[i].setTextColor(sf::Color::White);
-        gameOverPopup.choices[i].setTextSize(22);
-    }
-    // GỌI LẠI setPosition ĐỂ BUTTON LUÔN ĐỀU & GIỮA
-    gameOverPopup.setPosition(float(popupX), float(popupY));
+    initializePopups(
+        winPopup,
+        400, 240,
+        "VICTORY!",
+        "You win",
+        {"Try again", "Quit"}, font,  140, 46);
 
-    // Win Popup
-    winPopup = Popup(
-        sf::Vector2f(float(popupWidth), float(popupHeight)),
-        sf::Vector2f(float(popupX), float(popupY)), 2);
-
-    winPopup.setBackgroundColor(sf::Color(20, 15, 30, 220));
-    winPopup.frame.setOutlineThickness(4);
-    winPopup.frame.setOutlineColor(sf::Color(255, 255, 255, 180));
-    winPopup.setFont(font);
-    winPopup.setTextColor(sf::Color::White);
-    winPopup.setTextSize(30);
-    winPopup.setTitle("VICTORY!");
-    winPopup.setContent("You win");
-
-    winPopup.setChoiceButtonSize(140, 46);
-    winPopup.setChoiceString("Try again", 0);
-    winPopup.setChoiceString("Quit", 1);
-
-    for (int i = 0; i < 2; ++i) {
-        winPopup.choices[i].setBackgroundColor(sf::Color(130, 90, 255, 230));
-        winPopup.choices[i].setTextColor(sf::Color::White);
-        winPopup.choices[i].setTextSize(22);
-    }
-    winPopup.setPosition(float(popupX), float(popupY));
 }
-
-
 
 void GameManager::update() {
     if (!showGameOverPopup && !showWinPopup) {
@@ -211,8 +200,36 @@ void GameManager::pollEvents() {
         if (event.type == sf::Event::Closed) {
             this->window.close();
         }
+        // ---- Xử lý NÚT popup trước ----
+        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+            sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+
+            // Chỉ xử lý khi popup đang mở
+            if (showGameOverPopup) {
+                if (gameOverPopup.choices[0].isClicked(mousePos)) {
+                    showGameOverPopup = false;
+                    resetGame();
+                } else if (gameOverPopup.choices[1].isClicked(mousePos)) {
+                    window.close();
+                }
+                // Không cho xử lý event khác nữa
+                return;
+            }
+            if (showWinPopup) {
+                if (winPopup.choices[0].isClicked(mousePos)) {
+                    showWinPopup = false;
+                    resetGame();
+                } else if (winPopup.choices[1].isClicked(mousePos)) {
+                    window.close();
+                }
+                // Không cho xử lý event khác nữa
+                return;
+            }
+        }
+
+        // ---- Chỉ xử lý phím di chuyển khi KHÔNG có popup ----
         if (event.type == sf::Event::KeyPressed) {
-            if (showGameOverPopup == false){
+            if (!showGameOverPopup && !showWinPopup) {
                 switch (event.key.code) {
                     case sf::Keyboard::Up:
                     case sf::Keyboard::W:
@@ -234,25 +251,6 @@ void GameManager::pollEvents() {
                         break;
                 }
             }                 
-        }
-
-        if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            sf::Vector2f mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
-            if (this->gameOverPopup.choices[0].isClicked(mousePos)) {
-                this->showGameOverPopup = false;
-                this->resetGame();
-            } else if (gameOverPopup.choices[1].isClicked(mousePos)) {
-                this->window.close();
-            }
-
-            if (this->showWinPopup == true) {
-                if (gameOverPopup.choices[0].isClicked(mousePos)) {
-                    this->showWinPopup = false;
-                    this->resetGame();
-                } else if (this->gameOverPopup.choices[1].isClicked(mousePos)) {
-                    this->window.close();
-                }
-            }
         }
     }
 }
