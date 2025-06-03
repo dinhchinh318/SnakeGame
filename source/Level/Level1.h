@@ -1,5 +1,5 @@
-#ifndef _LEVEL1_H_
-#define _LEVEL1_H_
+#ifndef _LEVEL3_H_
+#define _LEVEL3_H_
 
 #include "Level.h"
 
@@ -15,8 +15,6 @@ public:
     void draw(sf::RenderWindow& window, int tileSize) override;
     void drawObstacles(sf::RenderWindow& window, int tileSize);
     void drawPort(sf::RenderWindow& window, int tileSize);
-    // void update(sf::RenderWindow& window, Snake& snake, GameManager& gm) override;
-    // void pollEvents(GameManager& gm) override;
 };
 
 #endif

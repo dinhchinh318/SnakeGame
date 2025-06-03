@@ -5,6 +5,7 @@
 #include "Food.h"
 #include "Level/LevelFactory.h"
 #include <iostream>
+#include "Components/Popup.h"
 
 class GameManager {
 private:
@@ -16,7 +17,12 @@ private:
 
     int foodEaten = 0;
     bool drawFood = true;
-    bool gameOver = false;
+
+    Popup gameOverPopup;
+    Popup winPopup;
+    bool showGameOverPopup = false;
+    bool showWinPopup = false;
+
     const int windowWidth = 800;
     const int windowHeight = 600;
     const int tileSize = 20;
@@ -47,6 +53,22 @@ public:
     //
     void setLevel(numberLevel num);
     const Level& getCurrentLevel() const;
+
+    void updateGameLogic();
+
+    void checkGameOver();
+    void checkLevelComplete();
+    void updatePopups();
+
+    // Popups
+    void showGameOverPopupFunc();
+    void showWinPopupFunc();
+
+    // Getters
+    int getFoodEaten() const { return foodEaten; }
+    bool isDrawFood() const { return drawFood; }
+    bool isShowGameOverPopup() const { return showGameOverPopup; }
+    bool isShowWinPopup() const { return showWinPopup; }
 };
 
 #endif

@@ -1,6 +1,6 @@
-#include "Level2.h"
+#include "Level4.h"
 
-Level2::Level2() {
+Level4::Level4() {
     // Bỏ obstacles cũ, xây lại tường bao khung hình
     obstacles.clear();
 
@@ -55,26 +55,26 @@ Level2::Level2() {
     obstacles.erase(std::remove(obstacles.begin(), obstacles.end(), startPort), obstacles.end());
 }
 
-numberLevel Level2::getLevelNumber() const { 
-    return numberLevel::L2; 
+numberLevel Level4::getLevelNumber() const { 
+    return numberLevel::L4; 
 }
 
-int Level2::getFoodGoal() const { 
+int Level4::getFoodGoal() const { 
     return 1; 
 }
 
-const std::vector<sf::Vector2i>& Level2::getObstacles() const { 
+const std::vector<sf::Vector2i>& Level4::getObstacles() const { 
     return obstacles; 
 }
 
-void Level2::draw(sf::RenderWindow& window, int tileSize)
+void Level4::draw(sf::RenderWindow& window, int tileSize)
 {
     drawPort(window, tileSize);
     drawObstacles(window, tileSize);
     // ...vẽ các thành phần khác nếu muốn
 }
 
-void Level2::drawObstacles(sf::RenderWindow& window, int tileSize)
+void Level4::drawObstacles(sf::RenderWindow& window, int tileSize)
 {
     sf::RectangleShape obsShape(sf::Vector2f(tileSize, tileSize));
     obsShape.setFillColor(sf::Color::Red); // màu tường, bạn có thể chỉnh
@@ -83,7 +83,7 @@ void Level2::drawObstacles(sf::RenderWindow& window, int tileSize)
         window.draw(obsShape);
     }
 }
-void Level2::drawPort(sf::RenderWindow& window, int tileSize){
+void Level4::drawPort(sf::RenderWindow& window, int tileSize){
     sf::RectangleShape obsShape(sf::Vector2f(tileSize, tileSize));
     obsShape.setFillColor(sf::Color::Green);
     obsShape.setPosition(startPort.x * tileSize, startPort.y * tileSize);
@@ -92,11 +92,11 @@ void Level2::drawPort(sf::RenderWindow& window, int tileSize){
     window.draw(obsShape);
 }
 
-void Level2::addObstacle(sf::Vector2i obstacle){
+void Level4::addObstacle(sf::Vector2i obstacle){
     obstacles.push_back(obstacle);
 }
 
-void Level2::deleteObstacle(sf::Vector2i obstacle){
+void Level4::deleteObstacle(sf::Vector2i obstacle){
     obstacles.erase(std::remove(obstacles.begin(), obstacles.end(), obstacle), obstacles.end());
 }
 

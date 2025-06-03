@@ -21,6 +21,11 @@ void Food::spawn(const std::vector<sf::Vector2i>& obstacles, const std::vector<s
     }
 }
 
+void Food::setPosition(sf::Vector2i newPos)
+{
+    position = newPos;
+}
+
 
 sf::Vector2i Food::getPosition() const 
 {
@@ -29,16 +34,33 @@ sf::Vector2i Food::getPosition() const
 
 void Food::draw(sf::RenderWindow& window, int tileSize) 
 {
-    sf::RectangleShape foodShape(sf::Vector2f(tileSize, tileSize));
-    foodShape.setPosition(position.x * tileSize, position.y * tileSize);
-    foodShape.setFillColor(sf::Color::Red);
-    window.draw(foodShape);
+    // Tính vị trí pixel giữa ô lưới
+    float pixelX = position.x * tileSize + tileSize / 2.f;
+    float pixelY = position.y * tileSize + tileSize / 2.f;
+
+    // Căn giữa sprite trong ô lưới
+    foodSprite.setPosition(pixelX, pixelY);
+
+    // Tính scale cho sprite vừa khít 1 ô (nếu cần)
+    sf::Vector2u texSize = foodTexture.getSize();
+    float scaleX = tileSize / static_cast<float>(texSize.x);
+    float scaleY = tileSize / static_cast<float>(texSize.y);
+    foodSprite.setScale(scaleX, scaleY);
+
+    window.draw(foodSprite);
 }
 
 
 Food::Food() 
 {
     std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seed for random number generation
-    // spawn();
+    // load snake image
+    foodTexture.loadFromFile("assets/picture/food.png");
+
+    foodSprite.setTexture(foodTexture);
+    //
+
+    foodSprite.setOrigin(foodTexture.getSize().x / 2.f, foodTexture.getSize().y / 2.f);
+    //
 }
 

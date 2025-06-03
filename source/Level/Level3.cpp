@@ -1,6 +1,6 @@
-#include "Level1.h"
+#include "Level3.h"
 
-Level1::Level1() {
+Level3::Level3() {
     // Bỏ obstacles cũ, xây lại tường bao khung hình
     obstacles.clear();
     // Vị trí cổng
@@ -21,26 +21,26 @@ Level1::Level1() {
     obstacles.erase(std::remove(obstacles.begin(), obstacles.end(), startPort), obstacles.end());
 }
 
-numberLevel Level1::getLevelNumber() const { 
-    return numberLevel::L1; 
+numberLevel Level3::getLevelNumber() const { 
+    return numberLevel::L3; 
 }
 
-int Level1::getFoodGoal() const { 
+int Level3::getFoodGoal() const { 
     return 1;
 }
 
-const std::vector<sf::Vector2i>& Level1::getObstacles() const {
+const std::vector<sf::Vector2i>& Level3::getObstacles() const {
     return obstacles; 
 }
 
-void Level1::draw(sf::RenderWindow& window, int tileSize)
+void Level3::draw(sf::RenderWindow& window, int tileSize)
 {
     drawPort(window, tileSize);
     drawObstacles(window, tileSize);
     // ...vẽ các thành phần khác nếu muốn
 }
 
-void Level1::drawObstacles(sf::RenderWindow& window, int tileSize)
+void Level3::drawObstacles(sf::RenderWindow& window, int tileSize)
 {
     sf::RectangleShape obsShape(sf::Vector2f(tileSize, tileSize));
     obsShape.setFillColor(sf::Color::Red); // màu tường, bạn có thể chỉnh
@@ -50,7 +50,7 @@ void Level1::drawObstacles(sf::RenderWindow& window, int tileSize)
     }
 }
 
-void Level1::drawPort(sf::RenderWindow& window, int tileSize){
+void Level3::drawPort(sf::RenderWindow& window, int tileSize){
     sf::RectangleShape obsShape(sf::Vector2f(tileSize, tileSize));
     obsShape.setFillColor(sf::Color::Green);
     obsShape.setPosition(startPort.x * tileSize, startPort.y * tileSize);
@@ -59,12 +59,12 @@ void Level1::drawPort(sf::RenderWindow& window, int tileSize){
     window.draw(obsShape);
 }
 
-void Level1::addObstacle(sf::Vector2i obstacle){
+void Level3::addObstacle(sf::Vector2i obstacle){
     if (std::find(obstacles.begin(), obstacles.end(), obstacle) == obstacles.end()){
         obstacles.push_back(obstacle);
     }
 }
 
-void Level1::deleteObstacle(sf::Vector2i obstacle){
+void Level3::deleteObstacle(sf::Vector2i obstacle){
     obstacles.erase(std::remove(obstacles.begin(), obstacles.end(), obstacle), obstacles.end());
 }

@@ -1,12 +1,12 @@
-#ifndef _LEVEL2_H_
-#define _LEVEL2_H_
+#ifndef _LEVEL1_H_
+#define _LEVEL1_H_
 
 #include "Level.h"
 
-class Level2 : public Level {
+class Level3 : public Level {
     std::vector<sf::Vector2i> obstacles;
 public:
-    Level2();
+    Level3();
     numberLevel getLevelNumber() const override;
     int getFoodGoal() const override;
     const std::vector<sf::Vector2i>& getObstacles() const override;

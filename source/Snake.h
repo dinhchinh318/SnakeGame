@@ -22,6 +22,7 @@ public:
     sf::Vector2i getHeadPosition();
     sf::Vector2i getTailPosition();
     std::vector<sf::Vector2i> getBody();
+    void setSnakePos(sf::Vector2i newPos);
     bool getIsAlive();
     void setIsAlive(bool isAlive);
     void move();

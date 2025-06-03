@@ -81,6 +81,18 @@ std::vector<sf::Vector2i> Snake::getBody() {
     return body;
 }
 
+void Snake::setSnakePos(sf::Vector2i newPos)
+{
+    sf::Vector2i delta(0, 0);
+    direction = RIGHT; // reset direction to RIGHT
+    delta = sf::Vector2i(-1, 0);
+    for (int i = 0; i < initLength; ++i) {
+        snake[i].x = newPos.x + delta.x * i;
+        snake[i].y = newPos.y + delta.y * i;
+    }
+}
+
+
 bool Snake::getIsAlive(){
     return isAlive;
 }
