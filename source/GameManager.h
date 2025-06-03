@@ -23,6 +23,10 @@ private:
     bool showGameOverPopup = false;
     bool showWinPopup = false;
 
+    // Textures and Sprites
+    sf::Texture yardTexture;
+    sf::Sprite yardSprite;
+
     const int windowWidth = 800;
     const int windowHeight = 600;
     const int tileSize = 20;
@@ -44,6 +48,8 @@ public:
     void pollEvents();
     void update();
     void draw();
+
+    void drawYard(sf::RenderWindow& window, int tileSize, int rows, int cols);
 
     bool isWindowOpen();
     void run();

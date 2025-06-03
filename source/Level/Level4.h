@@ -4,7 +4,6 @@
 #include "Level.h"
 
 class Level4 : public Level {
-    std::vector<sf::Vector2i> obstacles;
 public:
     Level4();
     numberLevel getLevelNumber() const override;
@@ -13,7 +12,6 @@ public:
     void addObstacle(sf::Vector2i obstacle) override;
     void deleteObstacle(sf::Vector2i obstacle) override;
     void draw(sf::RenderWindow& window, int tileSize) override;
-    void drawObstacles(sf::RenderWindow& window, int tileSize);
     void drawPort(sf::RenderWindow& window, int tileSize);
 };
 

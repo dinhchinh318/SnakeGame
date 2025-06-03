@@ -158,6 +158,7 @@ void GameManager::updatePopups() {
 void GameManager::draw() 
 {
     this->window.clear(sf::Color::Black);
+    this->drawYard(this->window, tileSize, rows, cols);
 
     if (this->currentLevel) {
         this->currentLevel->draw(window, tileSize); // VẼ TƯỜNG BAO/OBSTACLE
@@ -176,6 +177,34 @@ void GameManager::draw()
 
     this->window.display();
 }
+
+void GameManager::drawYard(sf::RenderWindow& window, int tileSize, int rows, int cols)
+{
+    // load snake image
+    yardTexture.loadFromFile("assets/picture/yard.jpg");
+
+    yardSprite.setTexture(yardTexture);
+    //
+
+    yardSprite.setOrigin(yardTexture.getSize().x / 2.f, yardTexture.getSize().y / 2.f);
+    //
+
+    yardSprite.setTexture(yardTexture);
+    yardSprite.setOrigin(0, 0); // Gốc trái trên
+    sf::Vector2u texSize = yardTexture.getSize();
+    float scaleX = tileSize / static_cast<float>(texSize.x);
+    float scaleY = tileSize / static_cast<float>(texSize.y);
+    yardSprite.setScale(scaleX, scaleY);
+
+    // Vẽ toàn bộ sàn theo ma trận (rows x cols)
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < cols; ++x) {
+            yardSprite.setPosition(x * tileSize, y * tileSize);
+            window.draw(yardSprite);
+        }
+    }
+}
+
 
 void GameManager::spawnFood() 
 {

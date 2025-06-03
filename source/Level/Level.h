@@ -13,6 +13,11 @@ enum class numberLevel {
 
 class Level {
 protected:
+    std::vector<sf::Vector2i> obstacles;
+
+    sf::Texture wallTexture;
+    sf::Sprite wallSprite;
+
     const int windowWidth = 800;
     const int windowHeight = 600;
     const int tileSize = 20;
@@ -30,6 +35,7 @@ public:
     virtual void addObstacle(sf::Vector2i obstacle) = 0;
     virtual void deleteObstacle(sf::Vector2i obstacle) = 0;
     virtual void draw(sf::RenderWindow& window, int tileSize) = 0;
+    void drawObstacles(sf::RenderWindow& window, int tileSize);
 };
 
 

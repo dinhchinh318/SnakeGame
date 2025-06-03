@@ -74,15 +74,6 @@ void Level4::draw(sf::RenderWindow& window, int tileSize)
     // ...vẽ các thành phần khác nếu muốn
 }
 
-void Level4::drawObstacles(sf::RenderWindow& window, int tileSize)
-{
-    sf::RectangleShape obsShape(sf::Vector2f(tileSize, tileSize));
-    obsShape.setFillColor(sf::Color::Red); // màu tường, bạn có thể chỉnh
-    for (const auto& pos : obstacles) {
-        obsShape.setPosition(pos.x * tileSize, pos.y * tileSize);
-        window.draw(obsShape);
-    }
-}
 void Level4::drawPort(sf::RenderWindow& window, int tileSize){
     sf::RectangleShape obsShape(sf::Vector2f(tileSize, tileSize));
     obsShape.setFillColor(sf::Color::Green);
