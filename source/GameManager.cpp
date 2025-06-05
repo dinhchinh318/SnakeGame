@@ -1,7 +1,12 @@
 #include "GameManager.h"
 
 GameManager::~GameManager() {
-    // Destructor can be used for cleanup if needed
+    if (this->menu)
+        delete this->menu;
+    if (this->setting)
+        delete this->setting;
+    if (this->game)
+        delete this->game;
 }
 
 void GameManager::initializePopups(
@@ -49,6 +54,10 @@ void GameManager::initWindow() {
 
     sf::Font font;
     font.loadFromFile("assets/Fonts/arial.ttf");
+
+    initMenuState();
+
+    this->currentState = this->menu;
 
     // Initialize popups
     initializePopups(
@@ -317,4 +326,21 @@ void GameManager::setLevel(numberLevel num) {
 
 const Level& GameManager::getCurrentLevel() const { 
     return *currentLevel; 
+}
+
+void GameManager::initMenuState(){
+    this->menu = new MenuState;
+    this->menu->init(this);
+}
+
+void GameManager::setState(WindowState *state){
+    this->currentState = state;
+}
+
+MenuState* GameManager::getMenuState(){
+    return this->menu;
+}
+
+WindowState* GameManager::getCurrentState(){
+    return this->currentState;
 }

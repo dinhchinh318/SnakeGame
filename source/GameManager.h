@@ -6,10 +6,27 @@
 #include "Level/LevelFactory.h"
 #include <iostream>
 #include "Components/Popup.h"
+#include "State/WindowState.h"
+#include "State/MenuState.h"
+#include "State/SettingState.h"
+#include "State/GameState.h"
 
 class GameManager {
 private:
+    const int windowWidth = 800;
+    const int windowHeight = 600;
+    const int tileSize = 20;
+    const int cols = windowWidth / tileSize;
+    const int rows = windowHeight / tileSize;
+
+    // Video mode
     sf::RenderWindow window;
+
+    //State
+    WindowState *currentState;
+    MenuState *menu;
+    SettingState *setting;
+    GameState *game;
 
     Snake snake;
     Food food;
@@ -18,6 +35,7 @@ private:
     int foodEaten = 0;
     bool drawFood = true;
 
+    //Popups
     Popup gameOverPopup;
     Popup winPopup;
     bool showGameOverPopup = false;
@@ -26,14 +44,10 @@ private:
     // Textures and Sprites
     sf::Texture yardTexture;
     sf::Sprite yardSprite;
-
-    const int windowWidth = 800;
-    const int windowHeight = 600;
-    const int tileSize = 20;
-    const int cols = windowWidth / tileSize;
-    const int rows = windowHeight / tileSize;
-
 public:
+    //signs to be used in states
+    bool hasGameInProgress;
+    
     GameManager() : snake(sf::Vector2i(cols / 2, rows / 2)), food() {}
 
     // Graphics
@@ -85,6 +99,17 @@ public:
     bool isDrawFood() const { return drawFood; }
     bool isShowGameOverPopup() const { return showGameOverPopup; }
     bool isShowWinPopup() const { return showWinPopup; }
+
+    //State
+    void initMenuState();
+    void initSettingState();
+    void initGameState();
+    void setState(WindowState *state);
+    MenuState *getMenuState();
+    SettingState *getSettingState();
+    GameState *getGameState();
+    WindowState *getCurrentState();
+    void drawCurrentState();
 };
 
 #endif
