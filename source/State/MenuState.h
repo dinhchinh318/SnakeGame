@@ -15,9 +15,9 @@ private:
     int numberOfButtons;
     Button button[5];
 
-    // add sound effect
-    sf::SoundBuffer soundBuffer;
-    sf::Sound selectionSound;
+    // // add sound effect
+    // sf::SoundBuffer soundBuffer;
+    // sf::Sound selectionSound;
 
 public:
     void pollEvents(GameManager *gameMan);

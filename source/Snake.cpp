@@ -1,7 +1,7 @@
 #include "Snake.h"
 
-Snake::Snake(sf::Vector2i starPos, Direction dir){
-    direction = dir;
+Snake::Snake(){
+    direction = RIGHT;
     growNext = false;
     isAlive = true;
 
@@ -23,26 +23,10 @@ Snake::Snake(sf::Vector2i starPos, Direction dir){
     turnSprite.setOrigin(turnTexture.getSize().x / 2.f, turnTexture.getSize().y / 2.f);
     //
     
-    sf::Vector2i delta(0, 0);
-    switch (dir) {
-        case UP:
-            delta = sf::Vector2i(0, 1);
-            break;
-        case DOWN:
-            delta = sf::Vector2i(0, -1);
-            break;
-        case LEFT: 
-            delta = sf::Vector2i(1, 0); 
-            break;
-        case RIGHT:
-            delta = sf::Vector2i(-1, 0); 
-            break;
-        default: 
-            break;
-    }
+    sf::Vector2i delta(-1, 0);
 
     for (int i = 0; i < initLength; ++i) {
-        snake.push_back(starPos + delta * static_cast<int>(i));
+        snake.push_back(delta * i);
     }
 }
 

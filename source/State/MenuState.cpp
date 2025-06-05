@@ -16,11 +16,13 @@ void MenuState::pollEvents(GameManager* gameMan) {
                     std::cout << "Resume" << std::endl;
                     gameMan->clearScreen();
                     gameMan->setState(gameMan->getGameState());
+                    gameMan->getGameState()->start(gameMan);
                     break;
                 case 1:
                     std::cout << "New Game" << std::endl;
                     gameMan->clearScreen();
                     gameMan->setState(gameMan->getGameState());
+                    gameMan->getGameState()->start(gameMan);
                     break;
                 case 2:
                     std::cout << "Setting" << std::endl;
@@ -55,7 +57,7 @@ void MenuState::init(GameManager* gameMan) {
 
     this->background.setSize(sf::Vector2f(gameMan->getRenderWindow().getSize().x,
                                             gameMan->getRenderWindow().getSize().y));
-    this->bg_texture.loadFromFile("assets/picture/menu.png");
+    this->bg_texture.loadFromFile("assets/picture/menu.jpg");
     background.setTexture(&this->bg_texture);
 
     // Game Title

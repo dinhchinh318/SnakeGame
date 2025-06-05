@@ -1,9 +1,6 @@
 #ifndef _GAME_MANAGER_H_
 #define _GAME_MANAGER_H_
 
-#include "Snake.h"
-#include "Food.h"
-#include "Level/LevelFactory.h"
 #include <iostream>
 #include "Components/Popup.h"
 #include "State/WindowState.h"
@@ -24,22 +21,9 @@ private:
 
     //State
     WindowState *currentState;
-    MenuState *menu;
-    SettingState *setting;
-    GameState *game;
-
-    Snake snake;
-    Food food;
-    std::unique_ptr<Level> currentLevel;
-
-    int foodEaten = 0;
-    bool drawFood = true;
-
-    //Popups
-    Popup gameOverPopup;
-    Popup winPopup;
-    bool showGameOverPopup = false;
-    bool showWinPopup = false;
+    MenuState *menu = nullptr;
+    SettingState *setting = nullptr;
+    GameState *game = nullptr;
 
     // Textures and Sprites
     sf::Texture yardTexture;
@@ -47,58 +31,20 @@ private:
 public:
     //signs to be used in states
     bool hasGameInProgress;
-    
-    GameManager() : snake(sf::Vector2i(cols / 2, rows / 2)), food() {}
+    bool showGameOverPopup = false;
+    bool showWinPopup = false;
 
     // Graphics
     ~GameManager();
     void initWindow();
-
-    void spawnFood();
     sf::RenderWindow &getRenderWindow();
+    bool isWindowOpen();
 
     // Window process
     void clearScreen();
     void pollEvents();
     void update();
     void draw();
-
-    void drawYard(sf::RenderWindow& window, int tileSize, int rows, int cols);
-
-    bool isWindowOpen();
-    void run();
-    void resetGame();
-    void start();
-
-    // Level logic
-    void setLevel(numberLevel num);
-    const Level& getCurrentLevel() const;
-
-    // update model
-    void updateGameLogic();
-    void checkGameOver();
-    void checkLevelComplete();
-    void updatePopups();
-
-    // Popups
-    void showGameOverPopupFunc();
-    void showWinPopupFunc();
-
-    void initializePopups  (
-                                Popup& p,
-                                int popupWidth, int popupHeight, 
-                                const std::string& title,
-                                const std::string& content,
-                                const std::vector<std::string>& ch,
-                                sf::Font& font,
-                                int buttonWidth, int buttonHeight
-                            );
-
-    // Getters
-    int getFoodEaten() const { return foodEaten; }
-    bool isDrawFood() const { return drawFood; }
-    bool isShowGameOverPopup() const { return showGameOverPopup; }
-    bool isShowWinPopup() const { return showWinPopup; }
 
     //State
     void initMenuState();

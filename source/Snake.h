@@ -15,7 +15,7 @@ private:
     sf::Texture headTexture, bodyTexture, tailTexture, turnTexture;
     sf::Sprite headSprite, bodySprite, tailSprite, turnSprite;
 public:
-    Snake(sf::Vector2i starPos, Direction dir = RIGHT);
+    Snake();
     void setDirection(Direction dir);
     Direction getDirection();
     std::vector<sf::Vector2i> getSnake();
