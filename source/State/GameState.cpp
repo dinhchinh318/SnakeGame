@@ -2,8 +2,12 @@
 #include "GameManager.h"
 
 GameState::~GameState(){
-    delete this->snake;
-    delete this->food;
+    if (this->snake)
+        delete this->snake;
+        this->snake = nullptr;
+    if (this->food)
+        delete this->food;
+        this->food = nullptr;
 }
 
 void GameState::init(GameManager *gameMan){
@@ -11,6 +15,7 @@ void GameState::init(GameManager *gameMan){
     this->food = new Food;
     this->foodEaten = 0;
     this->drawFood = true;
+
     font.loadFromFile("assets/Fonts/arial.ttf");
     initializePopups(
         gameOverPopup,
@@ -25,6 +30,10 @@ void GameState::init(GameManager *gameMan){
         "VICTORY!",
         "You win",
         {"Try again", "Quit"}, font,  140, 46);
+
+    this->setLevel(numberLevel::L1);
+    this->snake->reset(currentLevel->getStartPort(), RIGHT);
+    this->spawnFood();
 }
 
 void GameState::initializePopups(
@@ -79,21 +88,25 @@ void GameState::pollEvents(GameManager *gameMan) {
             if (showGameOverPopup) {
                 if (gameOverPopup.choices[0].isClicked(mousePos)) {
                     showGameOverPopup = false;
-                    resetGame();
+                    drawFood = true;
+                    this->setLevel(numberLevel::L1);
+                    this->snake->reset(currentLevel->getStartPort(), RIGHT);
+                    this->spawnFood();
                 } else if (gameOverPopup.choices[1].isClicked(mousePos)) {
-                    gameMan->getRenderWindow().close();
+                    gameMan->setState(gameMan->getMenuState());
                 }
-                // Không cho xử lý event khác nữa
                 return;
             }
             if (showWinPopup) {
                 if (winPopup.choices[0].isClicked(mousePos)) {
                     showWinPopup = false;
-                    resetGame();
+                    drawFood = true;
+                    this->setLevel(numberLevel::L1);
+                    this->snake->reset(currentLevel->getStartPort(), RIGHT);
+                    this->spawnFood();
                 } else if (winPopup.choices[1].isClicked(mousePos)) {
-                    gameMan->getRenderWindow().close();
+                    gameMan->setState(gameMan->getMenuState());
                 }
-                // Không cho xử lý event khác nữa
                 return;
             }
         }
@@ -234,8 +247,6 @@ void GameState::draw(GameManager* gameMan)
     if (this->showWinPopup) {
         this->winPopup.drawTo(gameMan->getRenderWindow());
     }
-
-    gameMan->getRenderWindow().display();
 }
 
 void GameState::drawYard(sf::RenderWindow& window, int tileSize, int rows, int cols)
@@ -265,7 +276,6 @@ void GameState::drawYard(sf::RenderWindow& window, int tileSize, int rows, int c
     }
 }
 
-
 void GameState::spawnFood() 
 {
     // Lấy danh sách các obstacles từ currentLevel
@@ -273,29 +283,8 @@ void GameState::spawnFood()
     this->food->spawn(obstacles, this->snake->getSnake(), cols, rows);
 }
 
-void GameState::resetGame() 
-{
-    drawFood = true;
-    this->setLevel(numberLevel::L1);
-    this->snake->reset(currentLevel->getStartPort(), RIGHT);
-    this->spawnFood();
-}
-
-void GameState::start(GameManager *gameMan) {
-    this->resetGame();
-    this->run(gameMan);
-}
-
-void GameState::run(GameManager *gameMan) {
-    while (gameMan->getRenderWindow().isOpen()) {
-        this->pollEvents(gameMan);
-        this->update(gameMan);     
-        this->draw(gameMan);
-    }
-}
-
 void GameState::setLevel(numberLevel num) {
-    currentLevel = LevelFactory::createLevel(num);
+    this->currentLevel = LevelFactory::createLevel(num);
 }
 
 const Level& GameState::getCurrentLevel() const { 

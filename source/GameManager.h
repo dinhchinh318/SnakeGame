@@ -21,19 +21,14 @@ private:
 
     //State
     WindowState *currentState;
-    MenuState *menu = nullptr;
-    SettingState *setting = nullptr;
-    GameState *game = nullptr;
+    MenuState *menu;
+    SettingState *setting;
+    GameState *game;
 
     // Textures and Sprites
     sf::Texture yardTexture;
     sf::Sprite yardSprite;
 public:
-    //signs to be used in states
-    bool hasGameInProgress;
-    bool showGameOverPopup = false;
-    bool showWinPopup = false;
-
     // Graphics
     ~GameManager();
     void initWindow();

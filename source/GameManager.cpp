@@ -17,8 +17,8 @@ void GameManager::initWindow() {
     sf::Font font;
     font.loadFromFile("assets/Fonts/arial.ttf");
 
-    initMenuState();
-    initGameState();
+    this->initMenuState();
+    this->initGameState();
 
     this->currentState = this->menu;
 }
@@ -28,10 +28,18 @@ void GameManager::initMenuState(){
     this->menu->init(this);
 }
 
-void GameManager::initGameState(){
+void GameManager::initGameState() {
+    if (this->currentState == this->game) {
+        this->currentState = this->menu;
+    }
+    if (this->game) {
+        delete this->game;
+        this->game = nullptr;
+    }
     this->game = new GameState;
     this->game->init(this);
 }
+
 
 void GameManager::initSettingState(){
     this->setting = new SettingState;
@@ -40,6 +48,7 @@ void GameManager::initSettingState(){
 
 // Getter / Setter states
 void GameManager::setState(WindowState *state){
+    std::cout << "[GameManager] setState called: " << typeid(*state).name() << std::endl;
     this->currentState = state;
 }
 

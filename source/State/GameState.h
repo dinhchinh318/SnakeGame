@@ -44,15 +44,11 @@ public:
     void spawnFood();
     void drawYard(sf::RenderWindow& window, int tileSize, int rows, int cols);
 
-    void resetGame();
-    void start(GameManager *gameMan);
-    void run(GameManager *gameMan);
-
-//     // Level logic
+    // Level logic
     void setLevel(numberLevel num);
     const Level& getCurrentLevel() const;
 
-//     // update model
+    // update model
     void updateGameLogic();
     void checkGameOver();
     void checkLevelComplete();
@@ -67,12 +63,6 @@ public:
                                 int buttonWidth, int buttonHeight
                             );
     void updatePopups(GameManager* gameMan);
-
-//     // Getters
-//     int getFoodEaten() const { return foodEaten; }
-//     bool isDrawFood() const { return drawFood; }
-//     bool isShowGameOverPopup() const { return showGameOverPopup; }
-//     bool isShowWinPopup() const { return showWinPopup; }
 };
 
 #endif
